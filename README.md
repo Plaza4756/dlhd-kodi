@@ -3,7 +3,7 @@
 
 ---
 
-# <img width="56" height="56" alt="icon" src="https://github.com/Plaza4756/dlhd-kodi/blob/3b550dd4c08a451b507e83436ff3ed6ba3661414/icon.png" /> DLHD - Kodi Addon
+# <img width="56" height="56" alt="icon" src="icon.png" /> DLHD - Kodi Addon
 **Enjoy 1000s of Daddylive iptv channels in Kodi. Search for your favorite shows/sports events/channels at ease**
 
 ---
@@ -27,3 +27,16 @@
 5. Select **"plugin.video.dlhd.x.x.zip"**
 
 **Done!** Enjoy DLHD in Video Add-ons section.
+
+---
+
+## 📸 Screenshots
+
+**Channels Page**
+<img alt="Channels Page" src="dlhd-channels.png">
+
+**Schedule Events Page**
+<img alt="Schedule Events Page" src="dlhd-schedule.png">
+
+**Player**
+<img alt="Player" src="dlhd-player.png">
