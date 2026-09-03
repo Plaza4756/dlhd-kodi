@@ -39,7 +39,7 @@ UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML,
 FANART = addon.getAddonInfo('fanart')
 ICON = addon.getAddonInfo('icon')
 
-SEED_BASEURL = 'https://dlstreams.st/'
+SEED_BASEURL = 'https://dlive.sx/'
 
 def log(msg):
     logpath = xbmcvfs.translatePath('special://logpath/')
