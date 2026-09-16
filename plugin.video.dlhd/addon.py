@@ -279,7 +279,7 @@ def getSource(trData):
             if '%7C' in cid or '|' in cid:
                 url_stream = abs_url('watchs2watch.php?id=' + cid)
             else:
-                url_stream = abs_url('embed/stream-' + cid + '.php')
+                url_stream = abs_url('stream/stream-' + cid + '.php')
             xbmcplugin.setContent(addon_handle, 'videos')
             PlayStream(url_stream)
     except Exception as e:
@@ -361,7 +361,7 @@ def PlayStream(link):
                 parsed_url = urlparse(url)
                 query_params = parse_qs(parsed_url.query)
                 cid = query_params.get('id')[0]
-                new_url = abs_url('embed/stream-' + cid + '.php')
+                new_url = abs_url('stream/stream-' + cid + '.php')
                 return new_url
             else:
                 return url
@@ -378,20 +378,8 @@ def PlayStream(link):
 
         try:
             source_resp, srurl = _fetch(source_url, ref=base, note='source response')
-            m3u8_redirect_url_encoded = re.search(r'window\.atob\(["\']([A-Za-z0-9+/=]+)["\']\)', source_resp).group(1)
-            m3u8_redirect_url = base64.b64decode(m3u8_redirect_url_encoded).decode('utf-8')
-            log(f"m3u8_redirect_url: {m3u8_redirect_url}")
-        except Exception as e:
-            log(f"Error: {e}")
-
-        try:
-            m3u8_redirect_resp, m3u8rdurl = _fetch(m3u8_redirect_url, ref=source_url, note='m3u8 index url response')
-            for line in m3u8_redirect_resp.split("\n"):
-                if line.startswith('#'):
-                    if line.startswith('#EXT-X-STREAM-INF'):
-                        m3u8_stream_info = line
-                elif line != '':
-                    m3u8_playlist_url = urljoin(m3u8_redirect_url, line)
+            m3u8_playlist_url = re.search(r'STREAM_URL\s*=\s*"((?:[^"\\]|\\.)*)"', source_resp).group(1).replace('\\/', '/')
+            log(f"m3u8_playlist_url: {m3u8_playlist_url}")
         except Exception as e:
             log(f"Error: {e}")
 
