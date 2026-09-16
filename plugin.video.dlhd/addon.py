@@ -346,11 +346,11 @@ def PlayStream(link):
             headers = {
                 'User-Agent': UA,
                 'Referer': base,
-                'Origin': _origin(base),
+                #'Origin': _origin(base),
             }
             if ref:
                 headers['Referer'] = ref
-                headers['Origin'] = _origin(ref)
+                #headers['Origin'] = _origin(ref)
             log(f'[PlayStream] GET {u}  (ref={headers.get("Referer")}) {note}')
             r = session.get(u, headers=headers, timeout=10)
             r.raise_for_status()
