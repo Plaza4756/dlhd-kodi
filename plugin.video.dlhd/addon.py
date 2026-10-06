@@ -279,7 +279,8 @@ def getSource(trData):
             if '%7C' in cid or '|' in cid:
                 url_stream = abs_url('watchs2watch.php?id=' + cid)
             else:
-                url_stream = abs_url('stream/stream-' + cid + '.php')
+                url_stream = abs_url('cast/stream-' + cid + '.php')
+                # url_stream = abs_url('stream/stream-' + cid + '.php')
             xbmcplugin.setContent(addon_handle, 'videos')
             PlayStream(url_stream)
     except Exception as e:
@@ -361,7 +362,8 @@ def PlayStream(link):
                 parsed_url = urlparse(url)
                 query_params = parse_qs(parsed_url.query)
                 cid = query_params.get('id')[0]
-                new_url = abs_url('stream/stream-' + cid + '.php')
+                new_url = abs_url('cast/stream-' + cid + '.php')
+                # new_url = abs_url('stream/stream-' + cid + '.php')
                 return new_url
             else:
                 return url
@@ -378,8 +380,22 @@ def PlayStream(link):
 
         try:
             source_resp, srurl = _fetch(source_url, ref=base, note='source response')
-            m3u8_playlist_url = re.search(r'STREAM_URL\s*=\s*"((?:[^"\\]|\\.)*)"', source_resp).group(1).replace('\\/', '/')
+            
+            econfig = re.search(r"window\._econfig\s*=\s*['\"]([^'\"]+)['\"]", source_resp).group(1)
+            outer = base64.b64decode(econfig).decode("utf-8")
+            q = len(outer) // 4
+            chunks = [outer[i:i+q] for i in range(0, q*4, q)]
+            reordered = [None] * 4
+
+            for source_index, destination_index in enumerate([2, 0, 3, 1]):
+                c = chunks[source_index]
+                c = c[:3] + c[4:]
+                reordered[destination_index] = base64.b64decode(c).decode("utf-8")
+
+            decoded_config = json.loads(base64.b64decode("".join(reordered)).decode("utf-8"))
+            m3u8_playlist_url = decoded_config.get("stream_url_nop2p") or decoded_config.get("stream_url")
             log(f"m3u8_playlist_url: {m3u8_playlist_url}")
+
         except Exception as e:
             log(f"Error: {e}")
 
